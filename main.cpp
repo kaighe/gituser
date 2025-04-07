@@ -8,6 +8,11 @@
 
 namespace fs = std::filesystem;
 
+void print_current_config(){
+    system("git config user.name");
+    system("git config user.email");
+}
+
 bool is_in_repo(){
     return system("git status >nul 2>nul") == 0;
 }
@@ -43,7 +48,7 @@ int add_user(std::vector<fs::path> users){
     printf("Email: ");
     std::cin >> email;
 
-    if(id == "add" || id == "remove" || id == "active"){
+    if(id == "add" || id == "remove" || id == "list"){
         printf("ERROR: Cannot name profile \"%s\".\n", id.c_str());
         return 1;
     }
@@ -89,7 +94,14 @@ int main(int argc, char** argv){
                 return 1;
             }
             return 0;
-        }else if(strcmp(argv[1], "active") == 0){ // TODO
+        }else if(strcmp(argv[1], "list") == 0){ // TODO
+            if(users.size() == 0){
+                printf("No profiles available.\n");
+            }else{
+                for(int i = 0; i < users.size(); i++){
+                    printf("- %s\n", users[i].filename().string().c_str());
+                }
+            }
             return 0;
         }else{
             if(!is_in_repo()){
@@ -111,14 +123,7 @@ int main(int argc, char** argv){
         }
     }
 
-    if(users.size() == 0){
-        printf("No profiles available.\n");
-    }else{
-        printf("Profiles:\n");
-        for(int i = 0; i < users.size(); i++){
-            printf("- %s\n", users[i].filename().string().c_str());
-        }
-    }
+    print_current_config();
 
     return 0;
 }
