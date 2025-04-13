@@ -61,7 +61,7 @@ int add_user(std::vector<fs::path> users){
     }
 
     std::ofstream file;
-    file.open(fs::current_path().root_path().append("gitusers").append(id));
+    file.open(fs::current_path().root_path().append("gituser").append(id));
     file << name << "\n";
     file << email;
     file.close();
